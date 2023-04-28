@@ -6,15 +6,15 @@ Migrating from BigQuery to Snowflake
 
 Here we saw some immediate advantages for the migration:
 
-*A better web UI* - The BigQuery UI doesn't make the best use of screen space, and it felt clunky to use. Snowsight, the Snowflake web UI, has been super easy to use. We rarely need to use the Snowflake CLI or an external IDE.
+**A better web UI** - The BigQuery UI doesn't make the best use of screen space, and it felt clunky to use. Snowsight, the Snowflake web UI, has been super easy to use. We rarely need to use the Snowflake CLI or an external IDE.
 
-*SQL* - Everything can be done using SQL in Snowflake whereas in BigQuery we had needed to use a custom API for a lot of simple things like renaming a table. These workarounds were not as user friendly as Snowflake.
+**SQL** - Everything can be done using SQL in Snowflake whereas in BigQuery we had needed to use a custom API for a lot of simple things like renaming a table. These workarounds were not as user friendly as Snowflake.
 
-*Zero Copy Clone* - In Snowflake, you can create copies of your tables, schemas, and databases without replicating the actual data by using cloning. Previously, in BigQuery, we had to move data physically and pay for additional storage and processing.
+**Zero Copy Clone** - In Snowflake, you can create copies of your tables, schemas, and databases without replicating the actual data by using cloning. Previously, in BigQuery, we had to move data physically and pay for additional storage and processing.
 
-*Caching* - Snowflake caches the results at a global level where BigQuery caches these results per-user. BigQuery doesn't allow this global Results Cache, so you'd have to re-run the query from scratch resulting in extra cost for the end user.
+**Caching** - Snowflake caches the results at a global level where BigQuery caches these results per-user. BigQuery doesn't allow this global Results Cache, so you'd have to re-run the query from scratch resulting in extra cost for the end user.
 
-*RBAC* - Snowflake follows the usual RBAC Security model where you create and manage user, roles, and privileges using native SQL. BigQuery uses the IAM model which is designed for the GCP ecosystem. Snowflake RBAC Model is much easier to work with and users can implement much granular level RBAC in Snowflake.
+**RBAC** - Snowflake follows the usual RBAC Security model where you create and manage user, roles, and privileges using native SQL. BigQuery uses the IAM model which is designed for the GCP ecosystem. Snowflake RBAC Model is much easier to work with and users can implement much granular level RBAC in Snowflake.
 
 As we worked on this migration, I made note and pulled together some of our key migration observations and learnings to help you along the way. To make it even easier for you, I've included code snippets.
 
