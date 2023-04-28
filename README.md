@@ -1,0 +1,2 @@
+# Migration_BigQuery_to_Snowflake
+Migration Plan
