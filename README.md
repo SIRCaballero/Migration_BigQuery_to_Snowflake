@@ -45,6 +45,49 @@ Use the *save results* option in BigQuery to export this data into a simple sc
 
 After the Schema names are loaded into a Snowflake table (called bq_schema in the sample code), run below proc on top of it to create those schemas in Snowflake and provide some grants to your Snowflake roles if required.
 
+```
+
+create or replace procedure create_bq_schemas()
+RETURNS varchar
+LANGUAGE JAVASCRIPT
+execute as caller
+AS
+$$
+var return_rows = [];
+var counter = 0
+var SQL_STMT = "select SCHEMA_NAME from bq_schema";
+var stmt = snowflake.createStatement({
+    sqlText: SQL_STMT
+});
+var result1 = stmt.execute();
+try {
+    while (result1.next()) {
+        var schema_name = result1.getColumnValue(1);
+        var ex = "create schema if not exists bq_db.{sc}";
+        ex = ex.replace(/{sc}/g, schema_name);
+        var stmt = snowflake.createStatement({
+            sqlText: ex
+        });
+        var r1 = stmt.execute();
+        var ex1 = "grant <usage/all> on schema bq_db.{sc} to role bq_db_admin_rl";
+        ex1 = ex1.replace(/{sc}/g, schema_name);
+        var stmt = snowflake.createStatement({
+            sqlText: ex1
+        });
+        var r2 = stmt.execute();
+
+        counter += 1;
+        return_rows.push(counter);
+    }
+} catch (err) {
+    throw err
+}
+return return_rows;
+$$
+;
+
+```
+
 Then call the Proc to create all schemas at once inside Snowflake -
 
 `call create_bq_schemas();`
