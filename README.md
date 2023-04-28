@@ -39,7 +39,7 @@ Migrate DDL
 
 First, create all the schemas in BigQuery as it is in Snowflake. To do that use the BigQuery INFORMATION_SCHEMA to run a simple query like below to find a list of all schemas. Ingest this data into a table inside Snowflake using simple CSV import/export.
 
-select schema_name from INFORMATION_SCHEMA.SCHEMATA
+```select schema_name from INFORMATION_SCHEMA.SCHEMATA```
 
 Use the *save results* option in BigQuery to export this data into a simple schemas.csv file and import that CSV into a table inside Snowflake using the Load Table option. Follow simple instructions on this [data load ](https://docs.snowflake.com/en/user-guide/data-load-web-ui.html)page from Snowflake documentation.
 
@@ -163,10 +163,10 @@ The easiest way to migrate data from Bigquery to snowflake is -
 Before starting data migration from BigQuery to Snowflake, please note that you can not migrate a BigQuery table with STRUCT or ARRAY data types into GCS as a plain CSV file. It has to be a JSON file where order of columns/keys is not guaranteed. Also BigQuery can export up to 1 GB of data to a single file. If you are exporting more than 1 GB of data, you must export your data to [multiple files](https://cloud.google.com/bigquery/docs/exporting-data#exporting_data_into_one_or_more_files) using Single wildcard URI explained [here](https://cloud.google.com/bigquery/docs/exporting-data#exporting_data_into_one_or_more_files).
 
 To keep track of the data migration, I took an export of the below query from BigQuery and created a table BQ_TABLES_COPY_STATUS inside Snowflake with the copy_done flag set as 'N'.
-
+```
 select table_name, table_schema, case when ddl like '%STRUCT%' or ddl like '%ARRAY%' then 'json' else 'csv' end as export_type, 'N' as copy_done\
 FROM `bq`.{}.INFORMATION_SCHEMA.TABLES where table_type='BASE TABLE'
-
+```
 Export to GCS
 =============
 
